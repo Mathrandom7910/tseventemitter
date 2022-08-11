@@ -12,16 +12,20 @@ class EventData {
 class EventEmitter {
     events = [];
     on(type, cb) {
+        if (typeof cb != "function")
+            throw new Error("Callback must be a function");
         this.events.push(new EventData(type, cb));
     }
     once(type, cb) {
+        if (typeof cb != "function")
+            throw new Error("Callback must be a function");
         this.events.push(new EventData(type, cb, true));
     }
-    emit(type, arg) {
+    emit(type, ...args) {
         this.events.filter(evt => {
             if (evt.name != type)
                 return true;
-            evt.cb(arg);
+            evt.cb(args);
             return !evt.once;
         });
     }
