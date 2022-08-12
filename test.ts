@@ -1,12 +1,15 @@
 import EventEmitter from "./src";
 
 interface EventMap {
-    [event: string]: (...args: any[]) => void;
-    ev1: (...args: any) => any;
-    ev2: (testStr: string, testNum: number) => any;
+    
+    ev1: string;
+    ev2: number;
 }
 
 const em = new EventEmitter<EventMap>();
-em.on("ev2", (str, num) => {
-
+em.on("ev2", (num) => {
+    console.log(num);
 });
+
+em.emit("ev1", "test");
+em.emit("ev2", 1);

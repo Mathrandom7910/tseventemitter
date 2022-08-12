@@ -1,34 +1,30 @@
-type defaultFn = (...args: any) => any;
-
 class EventData {
-    constructor(public name: string | number | symbol, public cb: defaultFn, public once = false) {
+    constructor(public name: string | number | symbol, public cb: Function, public once = false) {
         
     }
 }
 
 
-class EventEmitter<EventMap extends Record<string, defaultFn> = any> {
+class EventEmitter<Map> {
     private events: EventData[] = [];
 
-    on<K extends keyof EventMap>(type: K, cb: EventMap[K]) {
-        if(typeof cb != "function") throw new Error("Callback must be a function");
+    on<K extends keyof Map>(type: K, cb: (event: Map[K]) => any) {
         this.events.push(new EventData(type, cb));
     }
 
-    once<K extends keyof EventMap>(type: K, cb: EventMap[K]) {
-        if(typeof cb != "function") throw new Error("Callback must be a function");
+    once<K extends keyof Map>(type: K, cb: (event: Map[K]) => any) {
         this.events.push(new EventData(type, cb, true));
     }
 
-    emit<K extends keyof EventMap>(type: K, ...args: Parameters<EventMap[K]>) {
+    emit<K extends keyof Map>(type: K, arg: Map[K]) {
         this.events.filter(evt => {
             if(evt.name != type) return true;
-            evt.cb(args);
+            evt.cb(arg);
             return !evt.once;
         });
     }
 
-    removeEvent<K extends keyof EventMap>(type: K, cb: Function) {
+    removeEvent<K extends keyof Map>(type: K, cb: Function) {
         this.events.forEach(e => {
             if(e.name == type && e.cb == cb) {
                 e.once = true;

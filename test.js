@@ -1,9 +1,17 @@
 const EventEmitter = require("./out/index");
 
-const evEm = new EventEmitter();
-evEm.on("someevent", (arg) => {
-    console.log("running some event! Argument is " + arg);
+// const evEm = new EventEmitter();
+// evEm.on("someevent", (arg) => {
+//     console.log("running some event! Argument is " + arg);
+// });
+
+
+// setTimeout(() => evEm.emit("someevent", "this is an argument"), 1e3);
+
+const em = new EventEmitter();
+em.on("ev2", (num) => {
+    console.log(num);
 });
 
-
-setTimeout(() => evEm.emit("someevent", "this is an argument"), 1e3);
+em.emit("ev1", "test");
+em.emit("ev2", 1);

@@ -1,10 +1,9 @@
-declare type defaultFn = (...args: any) => any;
-declare class EventEmitter<EventMap extends Record<string, defaultFn> = any> {
+declare class EventEmitter<Map> {
     private events;
-    on<K extends keyof EventMap>(type: K, cb: EventMap[K]): void;
-    once<K extends keyof EventMap>(type: K, cb: EventMap[K]): void;
-    emit<K extends keyof EventMap>(type: K, ...args: Parameters<EventMap[K]>): void;
-    removeEvent<K extends keyof EventMap>(type: K, cb: Function): void;
+    on<K extends keyof Map>(type: K, cb: (event: Map[K]) => any): void;
+    once<K extends keyof Map>(type: K, cb: (event: Map[K]) => any): void;
+    emit<K extends keyof Map>(type: K, arg: Map[K]): void;
+    removeEvent<K extends keyof Map>(type: K, cb: Function): void;
 }
 export = EventEmitter;
 //# sourceMappingURL=index.d.ts.map
