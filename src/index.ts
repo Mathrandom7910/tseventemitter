@@ -5,7 +5,7 @@ class EventData {
 }
 
 
-class EventEmitter<Map> {
+class EventEmitter<Map = any> {
     private events: EventData[] = [];
 
     on<K extends keyof Map>(type: K, cb: (event: Map[K]) => any) {

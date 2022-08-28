@@ -9,6 +9,14 @@
     "buildr": "npm run build && npm run run",
     "test": "node ./test.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mathrandom7910/tseventemitter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Mathrandom7910/tseventemitter/issues"
+  },
+  "homepage": "https://github.com/Mathrandom7910/tseventemitter#readme",
   "keywords": [],
   "author": "Mathrandom7910",
   "license": "ISC"
