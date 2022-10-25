@@ -6,10 +6,15 @@ interface EventMap {
     ev2: number;
 }
 
-const em = new EventEmitter<EventMap>();
-em.on("ev2", (num) => {
-    console.log(num);
-});
+(async function () {
+    const em = new EventEmitter<EventMap>();
+    em.on("ev2", (num) => {
+        console.log(num);
+    });
 
-em.emit("ev1", "test");
-em.emit("ev2", 1);
+    em.await("ev2")
+    
+    em.emit("ev1", "test");
+    em.emit("ev2", 1);
+})();
+

@@ -7,11 +7,17 @@ const EventEmitter = require("./out/index");
 
 
 // setTimeout(() => evEm.emit("someevent", "this is an argument"), 1e3);
-
-const em = new EventEmitter();
-em.on("ev2", (num) => {
-    console.log(num);
-});
-
-em.emit("ev1", "test");
-em.emit("ev2", 1);
+(async function () {
+    const em = new EventEmitter();
+    console.log(em);
+    setTimeout(() => {
+        em.emit("a", "this is the result");
+    }, 1e3);
+    const r = await em.await("a");
+    console.log(r);
+    em.removeEvent("a");
+    setTimeout(() => {
+        console.log(em);
+    }, 500);
+    
+})();
