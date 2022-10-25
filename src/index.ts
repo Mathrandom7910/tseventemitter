@@ -84,7 +84,7 @@ class EventEmitter<Map = any> {
      * @returns Promise that is resolved once the specified event is emitted.
      */
 
-    await<K extends keyof Map>(type: K) {
+    wait<K extends keyof Map>(type: K) {
         return new Promise<Map[K]>((res) => {
             const fn = (e: Map[K]) => {
                 res(e);

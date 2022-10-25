@@ -37,7 +37,7 @@ declare class EventEmitter<Map = any> {
      * @param type Type of event to wait for.
      * @returns Promise that is resolved once the specified event is emitted.
      */
-    await<K extends keyof Map>(type: K): Promise<Map[K]>;
+    wait<K extends keyof Map>(type: K): Promise<Map[K]>;
 }
 export = EventEmitter;
 //# sourceMappingURL=index.d.ts.map

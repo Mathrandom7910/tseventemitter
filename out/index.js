@@ -77,7 +77,7 @@ class EventEmitter {
      * @param type Type of event to wait for.
      * @returns Promise that is resolved once the specified event is emitted.
      */
-    await(type) {
+    wait(type) {
         return new Promise((res) => {
             const fn = (e) => {
                 res(e);
