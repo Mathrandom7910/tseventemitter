@@ -1,3 +1,4 @@
+const e = require("express");
 const EventEmitter = require("./out/index");
 
 // const evEm = new EventEmitter();
@@ -12,12 +13,16 @@ const EventEmitter = require("./out/index");
     console.log(em);
     setTimeout(() => {
         em.emit("a", "this is the result");
+        em.emit("b", "this is the other");
     }, 1e3);
-    const r = await em.await("a");
-    console.log(r);
-    em.removeEvent("a");
-    setTimeout(() => {
-        console.log(em);
-    }, 500);
+    em.on("a", console.log);
+    em.on("b", console.log);
+    console.log(em);
+    // const r = await em.await("a");
+    // console.log(r);
+    // em.removeEvent("a");
+    // setTimeout(() => {
+    //     console.log(em);
+    // }, 500);
     
 })();

@@ -6,17 +6,19 @@ class EventData {
 
 
 class EventEmitter<Map = any> {
-    private events: EventData[] = [];
+    private events: Record<keyof Map, EventData[]> = {} as any;
 
     /**
      * Registers an event that will be called when emit with the same type is called.
      * @param type Type of event to register to.
      * @param cb Callback function that is called when the given event is emitted.
+     * @param once Determines if the event should only be called once
      * @returns The callback function.
      */
 
-    on<K extends keyof Map>(type: K, cb: (event: Map[K]) => any) {
-        this.events.push(new EventData(type, cb));
+    on<K extends keyof Map>(type: K, cb: (event: Map[K]) => any, once = false) {
+        if(!this.events[type]) this.events[type] = [];
+        this.events[type].push(new EventData(type, cb, once));
         return cb;
     }
 
@@ -28,8 +30,7 @@ class EventEmitter<Map = any> {
      */
 
     once<K extends keyof Map>(type: K, cb: (event: Map[K]) => any) {
-        this.events.push(new EventData(type, cb, true));
-        return cb;
+        return this.on(type, cb, true);
     }
 
     /**
@@ -39,12 +40,13 @@ class EventEmitter<Map = any> {
      */
 
     emit<K extends keyof Map>(type: K, arg: Map[K]) {
-        for(let i = 0; i < this.events.length; i++) {
-            const evt = this.events[i];
+        if(!this.events[type]) return;
+        for(let i = 0; i < this.events[type].length; i++) {
+            const evt = this.events[type][i];
             if(evt.name != type) continue;
             evt.cb(arg);
             if(evt.once) {
-                this.events.splice(i, 1);
+                this.events[type].splice(i, 1);
                 i--;
             }
         }
@@ -56,26 +58,12 @@ class EventEmitter<Map = any> {
      * @param cb Callback of the event type to unregister
      */
 
-    removeEvent<K extends keyof Map>(type: K, cb: Function) {
-        this.events.forEach(e => {
-            if(e.name == type && e.cb == cb) {
-                e.once = true;
-            }
-        });
-    }
-
-    /**
-     * "Unregisters" an event - doesn't prevent from event being called again, event will only be called once after this method is called.
-     * @param type Type of event to unregister.
-     * @param cb Callback of the event type to unregister
-     */
-
     off<K extends keyof Map>(type: K, cb: Function) {
-        this.events.forEach(e => {
+        for(const e of this.events[type]) {
             if(e.name == type && e.cb == cb) {
                 e.once = true;
             }
-        });
+        }
     }
 
     /**
